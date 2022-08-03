@@ -100,7 +100,7 @@ function finalScore(callback, innings){
     Home:'',
     Away:''
   };
-  
+
   const scoreH = [0];
   const scoreA = [0];
 
@@ -142,11 +142,15 @@ For example: invoking getInningScore(inning) might return this object:
   */
 
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
-
+function getInningScore(callback) {
+  let sscores = {
+    Home: callback(),
+    Away: callback()
+  }
+  return sscores; 
 }
 
+console.log(getInningScore(inning));
 
 /* STRETCH: ⚾️⚾️⚾️ Task 5: scoreboard() ⚾️⚾️⚾️
 Use the scoreboard function below to do the following:
