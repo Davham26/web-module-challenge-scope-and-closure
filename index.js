@@ -30,11 +30,16 @@ console.log('example task:', processFirstItem(['foo','bar'],function(str){return
   Study the code for counter1 and counter2, then answer the questions below.
   
   1. What is the difference between counter1 and counter2?
+    Their lexical scope is different. While counter1's variable count cannot be accessed outside of the outer function, counter2's count variable is declared globally. 
   
   2. Which of the two uses a closure? How can you tell?
+    Although they have different levels of scope, counter 1 and 2 should function similarly and give the same output due to the fact that the count variable is declared one level above the incrementor.
+    This causes each function to 'save' the value internally over time via closure as the functions are called repeatedly, however only Counter1 can be duplicated within a seperate variable name (such as counter3).
+    Therefore, both examples have closures involved, but the closure within the counterMaker Function is more useful. 
   
   3. In what scenario would the counter1 code be preferable? In what scenario would 
      counter2 be better?  
+
 */
 
 // counter1 code
@@ -54,6 +59,7 @@ function counter2() {
   return count++;
 }
 
+const counter3 = counterMaker();
 
 /* ⚾️⚾️⚾️ Task 2: inning() ⚾️⚾️⚾️
 Use the inning function below to do the following:
@@ -64,10 +70,16 @@ Use the inning function below to do the following:
 NOTE: This will be a callback function for the tasks below
 */
 
-function inning(/*Code Here*/){
-    /*Code Here*/
+function inning(){
+  let x = Math.random();
+  if (x > .67){
+    return 2;
+  } else if (x > .33 && x < .67) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
-
 
 /* ⚾️⚾️⚾️ Task 3: finalScore() ⚾️⚾️⚾️
 Use the finalScore function below to do the following:
@@ -83,10 +95,39 @@ Use the finalScore function below to do the following:
 }
 */ 
 
-function finalScore(/*Code Here*/){
-  /*Code Here*/
+function finalScore(callback, innings){
+  let scores = {
+    Home:'',
+    Away:''
+  };
+  
+  const scoreH = [0];
+  const scoreA = [0];
+
+  scores.Home = homeScore();
+  scores.Away = awayScore();
+
+  function homeScore(){
+    let x = 0;
+    while (x < innings){
+    scoreH.push(scoreH[x-1] + callback());
+    x++;
+    }
+    return scoreH[x-1];
+  }
+
+  function awayScore(){
+    let x = 0;
+    while (x < innings){
+    scoreA.push(scoreA[x-1] + callback());
+    x++;
+    }
+    return scoreA[x-1];
+  }
+  return scores;
 }
 
+console.log(finalScore(inning, 9));
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
 Use the getInningScore() function below to do the following:
